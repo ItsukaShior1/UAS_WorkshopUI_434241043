@@ -1,56 +1,142 @@
 @extends('layouts.app')
 
-@section('title', 'Bookify - Kelola Keuangan UMKM dengan Mudah')
+@section('title', 'Bookify - Kelola Keuangan UMKM')
 
 @section('content')
-<!-- Landing Page -->
-<div id="landingPage" class="landing-page active">
-    <div class="landing-container">
-        <div class="landing-content">
-            <div class="landing-header">
-                <h1 class="landing-title">Bookify</h1>
-                <p class="landing-subtitle">Kelola Keuangan UMKM dengan Mudah</p>
-            </div>
 
-            <div class="landing-hero">
-                <div class="hero-icon">📊</div>
-                <h2>Solusi Keuangan untuk UMKM Anda</h2>
-                <p>Catat transaksi, kelola stok, dan dapatkan insight bisnis dalam satu platform yang mudah digunakan.</p>
-            </div>
+<div class="modern-landing">
 
-            <div class="landing-features">
-                <div class="landing-feature-card">
-                    <div class="card-icon">📝</div>
-                    <h3>Catat Transaksi</h3>
-                    <p>Catat pemasukan dan pengeluaran dengan cepat tanpa ribet</p>
-                </div>
-                <div class="landing-feature-card">
-                    <div class="card-icon">📦</div>
-                    <h3>Kelola Stok</h3>
-                    <p>Monitor stok barang dan hindari kehabisan atau kelebihan stok</p>
-                </div>
-                <div class="landing-feature-card">
-                    <div class="card-icon">✨</div>
-                    <h3>Insight AI</h3>
-                    <p>Dapatkan rekomendasi bisnis berbasis data dan analisis mendalam</p>
-                </div>
-                <div class="landing-feature-card">
-                    <div class="card-icon">👥</div>
-                    <h3>Komunitas</h3>
-                    <p>Berbagi pengalaman dan belajar dari UMKM lain</p>
-                </div>
-            </div>
-
-            <div class="landing-cta">
-                <p class="landing-info">Gratis untuk semua pengguna • Tanpa biaya tersembunyi</p>
-                <div class="cta-button-container">
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-large">
-                        <span>Lanjutkan</span>
-                        <span class="next-arrow">→</span>
-                    </a>
-                </div>
-            </div>
+    <!-- NAVBAR -->
+    <nav class="landing-navbar">
+        <div class="nav-logo">
+            <div class="logo-box">B</div>
+            <span>Bookify</span>
         </div>
-    </div>
+
+        <a href="{{ route('login') }}" class="nav-login-btn">
+            Masuk →
+        </a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-section">
+
+        <!-- LEFT -->
+        <div class="hero-left">
+
+            <div class="hero-badge">
+                ● Gratis untuk semua UMKM
+            </div>
+
+            <h1>
+                Kelola keuangan <br>
+                UMKM, <span>lebih mudah</span> <br>
+                dari sebelumnya.
+            </h1>
+
+            <p>
+                Catat transaksi, pantau stok, dan dapatkan insight bisnis
+                berbasis AI — semua dalam satu platform yang dirancang
+                untuk pebisnis Indonesia.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{{ route('login') }}" class="btn-start">
+                    Mulai Gratis →
+                </a>
+
+                <a href="#" class="btn-demo">
+                    Lihat Demo
+                </a>
+            </div>
+
+            <div class="hero-info">
+                Tanpa kartu kredit • Tanpa biaya tersembunyi
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="hero-right">
+
+            <div class="hero-main-card">
+                <img src="{{ asset('img/logo/bookify-logo.png') }}" alt="">
+            </div>
+
+            <div class="hero-small-cards">
+
+                <div class="small-card">
+                    <img src="{{ asset('img/features/transaction-history.jpg') }}" alt="">
+                    <h4>Catat Transaksi</h4>
+                </div>
+
+                <div class="small-card">
+                    <img src="{{ asset('img/features/stock-management.jpg') }}" alt="">
+                    <h4>Kelola Stok</h4>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section class="feature-section">
+
+        <h5>FITUR UNGGULAN</h5>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <img src="{{ asset('img/features/transaction-history.jpg') }}">
+                <h3>Catat Transaksi</h3>
+                <p>Pemasukan & pengeluaran dalam hitungan detik</p>
+            </div>
+
+            <div class="feature-card">
+                <img src="{{ asset('img/features/stock-management.jpg') }}">
+                <h3>Kelola Stok</h3>
+                <p>Monitor stok real-time, hindari kehabisan</p>
+            </div>
+
+            <div class="feature-card">
+                <img src="{{ asset('img/features/insight-ai.jpg') }}">
+                <h3>Insight AI</h3>
+                <p>Rekomendasi bisnis berbasis data & tren</p>
+            </div>
+
+            <div class="feature-card">
+                <img src="{{ asset('img/features/community.jpg') }}">
+                <h3>Komunitas</h3>
+                <p>Berbagi & belajar bersama UMKM lain</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <section class="landing-footer">
+
+        <div class="footer-left">
+            <div class="avatars">
+                <span>A</span>
+                <span>B</span>
+                <span>C</span>
+                <span>D</span>
+            </div>
+
+            <p>Dipercaya <strong>2.400+ UMKM</strong> se-Indonesia</p>
+        </div>
+
+        <div class="footer-rating">
+            ⭐⭐⭐⭐⭐
+            <span>4.9 / 5 bintang</span>
+        </div>
+
+    </section>
+
 </div>
+
 @endsection
