@@ -20,4 +20,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/reports', [DashboardController::class, 'reports'])->name('dashboard.reports');
     Route::get('/dashboard/insights', [DashboardController::class, 'insights'])->name('dashboard.insights');
     Route::get('/dashboard/community', [DashboardController::class, 'community'])->name('dashboard.community');
+    Route::get('/dashboard/community/create', [DashboardController::class, 'communityCreate'])->name('dashboard.community.create');
+    Route::get('/dashboard/community/{post}', [DashboardController::class, 'communityShow'])->name('dashboard.community.show');
 });

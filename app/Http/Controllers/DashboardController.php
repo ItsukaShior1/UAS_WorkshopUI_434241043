@@ -7,6 +7,25 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    private function communityPosts(): array
+    {
+        return [
+            ['id' => 1, 'author' => 'Admin Bookify', 'avatar' => 'https://i.pinimg.com/736x/c7/95/cf/c795cf18419aea9ca42302ad9af149f6.jpg', 'cover' => 'https://i.pinimg.com/736x/c7/95/cf/c795cf18419aea9ca42302ad9af149f6.jpg', 'category' => 'Kisah Sukses', 'title' => 'Dari Kecil Menjadi Besar', 'excerpt' => 'Perjalanan saya membangun usaha dari modal kecil hingga sekarang bisa omset jutaan per bulan.', 'content' => 'Perjalanan saya membangun usaha dari modal kecil hingga sekarang bisa omset jutaan per bulan. Awalnya saya hanya berjualan dari rumah dengan stok terbatas. Setelah konsisten mencatat transaksi dan memahami kebutuhan pelanggan, usaha ini mulai berkembang. Kuncinya ada di disiplin, pelayanan, dan keberanian mencoba promosi baru.', 'date' => '15 Juli 2023', 'read_time' => '5 menit baca', 'likes' => 245, 'comments' => 32, 'views' => '1.2k', 'author_role' => 'UMKM Mikro'],
+            ['id' => 2, 'author' => 'Toko Kelontong', 'avatar' => 'https://i.pinimg.com/originals/6a/99/0c/6a990c97109eef77fa91c07df634be60.jpg', 'cover' => 'https://i.pinimg.com/originals/6a/99/0c/6a990c97109eef77fa91c07df634be60.jpg', 'category' => 'Tips & Trik', 'title' => 'Cara Kelola Stok Efisien', 'excerpt' => 'Berbagi tips cara saya mengelola stok tanpa kelebihan atau kekurangan.', 'content' => 'Berbagi tips cara saya mengelola stok tanpa kelebihan atau kekurangan. Saya mulai dengan membuat daftar barang fast moving dan slow moving, lalu mengevaluasi stok setiap minggu. Dengan pencatatan yang rapi, barang tidak menumpuk dan modal bisa diputar lebih cepat. Sistem sederhana ini sangat membantu menjaga arus kas tetap sehat.', 'date' => '2 Agustus 2023', 'read_time' => '4 menit baca', 'likes' => 156, 'comments' => 18, 'views' => '862', 'author_role' => 'Pemilik Toko'],
+            ['id' => 3, 'author' => 'Freelancer Profesional', 'avatar' => 'https://i.kym-cdn.com/entries/icons/facebook/000/052/237/cover3.jpg', 'cover' => 'https://i.kym-cdn.com/entries/icons/facebook/000/052/237/cover3.jpg', 'category' => 'Tantangan', 'title' => 'Menghadapi Persaingan Pasar', 'excerpt' => 'Bagaimana kita bisa bertahan dan berkembang di tengah persaingan yang ketat?', 'content' => 'Bagaimana kita bisa bertahan dan berkembang di tengah persaingan yang ketat? Saya belajar bahwa diferensiasi layanan, komunikasi yang cepat, dan portofolio yang jelas sangat menentukan. Pasar memang padat, tetapi masih banyak ruang untuk tumbuh jika kita konsisten memperbaiki kualitas kerja dan menjaga kepercayaan klien.', 'date' => '21 September 2023', 'read_time' => '6 menit baca', 'likes' => 89, 'comments' => 27, 'views' => '540', 'author_role' => 'Independent Freelancer'],
+        ];
+    }
+
+    private function findCommunityPost(int $postId): array
+    {
+        $posts = collect($this->communityPosts());
+        $post = $posts->firstWhere('id', $postId);
+
+        abort_if(! $post, 404);
+
+        return $post;
+    }
+
     /**
      * Show dashboard home
      */
@@ -121,13 +140,31 @@ class DashboardController extends Controller
     public function community()
     {
         $user = Auth::user();
-        
-        $posts = [
-            ['id' => 1, 'author' => 'Admin Bookify', 'category' => 'Kisah Sukses', 'title' => 'Dari Kecil Menjadi Besar', 'content' => 'Perjalanan saya membangun usaha dari modal kecil hingga sekarang bisa omset jutaan per bulan.', 'likes' => 245, 'comments' => 32],
-            ['id' => 2, 'author' => 'Toko Kelontong', 'category' => 'Tips & Trik', 'title' => 'Cara Kelola Stok Efisien', 'content' => 'Berbagi tips cara saya mengelola stok tanpa kelebihan atau kekurangan', 'likes' => 156, 'comments' => 18],
-            ['id' => 3, 'author' => 'Freelancer Profesional', 'category' => 'Tantangan', 'title' => 'Menghadapi Persaingan Pasar', 'content' => 'Bagaimana kita bisa bertahan dan berkembang di tengah persaingan yang ketat?', 'likes' => 89, 'comments' => 27],
-        ];
-        
+
+        $posts = $this->communityPosts();
+
         return view('dashboard.community', compact('user', 'posts'));
+    }
+
+    public function communityCreate()
+    {
+        $user = Auth::user();
+
+        $categories = ['Kisah Sukses', 'Tips & Trik', 'Tantangan', 'Lainnya'];
+
+        return view('dashboard.community-create', compact('user', 'categories'));
+    }
+
+    public function communityShow(int $post)
+    {
+        $user = Auth::user();
+        $post = $this->findCommunityPost($post);
+
+        $comments = [
+            ['author' => 'Ahmad Rizki', 'time' => '2 hari lalu', 'text' => 'Terima kasih sudah berbagi! Sangat inspiratif dan membantu saya yang baru memulai usaha.'],
+            ['author' => 'Linda Susanti', 'time' => '1 hari lalu', 'text' => 'Saya juga mengalami hal serupa. Tips yang sangat berguna!'],
+        ];
+
+        return view('dashboard.community-detail', compact('user', 'post', 'comments'));
     }
 }
