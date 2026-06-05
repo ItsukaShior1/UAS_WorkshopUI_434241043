@@ -3318,20 +3318,22 @@ body.auth-open {
 /* RIGHT */
 
 .hero-main-card {
-    height: 320px;
-    border-radius: 28px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     margin-bottom: 20px;
+    background: transparent;
+    border: none;
+    height: auto;
+    overflow: visible;
 }
 
 .hero-main-card img {
-    width: 70%;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
     object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
 }
 
 .hero-small-cards {

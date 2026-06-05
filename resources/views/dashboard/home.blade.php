@@ -10,7 +10,7 @@
         <div class="balance-section dashboard-panel dashboard-panel-hero">
             <div class="balance-header">
                 <h3>Saldo Kas</h3>
-                <span class="month-label">Mei 2024</span>
+                <span class="month-label">{{ $monthLabel ?? now()->translatedFormat('F Y') }}</span>
             </div>
             <div class="balance-display">
                 <h1>Rp {{ number_format($balance, 0, ',', '.') }}</h1>
@@ -90,14 +90,24 @@
 
     <!-- Alerts -->
     <div class="alerts-section dashboard-panel">
-        <div class="alert alert-warning">
-            <span class="alert-icon">⚠️</span>
-            <div class="alert-content">
-                <h4>Stok Hampir Habis</h4>
-                <p>2 produk perlu diperhatikan</p>
+        @if(!empty($criticalStock))
+            <div class="alert alert-{{ $criticalStock[0]['status'] === 'critical' ? 'danger' : 'warning' }}">
+                <span class="alert-icon">⚠️</span>
+                <div class="alert-content">
+                    <h4>Stok Perlu Diperhatikan</h4>
+                    <p>{{ count($criticalStock) }} produk: {{ collect($criticalStock)->pluck('name')->take(3)->implode(', ') }}</p>
+                </div>
+                <a href="{{ route('dashboard.stock') }}" class="alert-link">Lihat Sekarang</a>
             </div>
-            <a href="{{ route('dashboard.stock') }}" class="alert-link">Lihat Sekarang</a>
-        </div>
+        @else
+            <div class="alert alert-success">
+                <span class="alert-icon">✅</span>
+                <div class="alert-content">
+                    <h4>Stok Aman</h4>
+                    <p>Semua produk dalam kondisi normal</p>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
