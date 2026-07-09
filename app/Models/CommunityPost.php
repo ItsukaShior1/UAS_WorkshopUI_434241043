@@ -13,7 +13,15 @@ class CommunityPost extends Model
 
     protected $fillable = [
         'user_id', 'author_name', 'author_role', 'avatar_url', 'cover_url',
-        'category', 'title', 'excerpt', 'content', 'likes_count', 'comments_count',
+        'image_data', 'image_mime',
+        'category', 'title', 'excerpt', 'content',
+        'is_published', 'published_at',
+        'likes_count', 'comments_count',
+    ];
+
+    protected $casts = [
+        'is_published' => 'boolean',
+        'published_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -24,5 +32,31 @@ class CommunityPost extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(CommunityComment::class, 'post_id');
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(PostLike::class, 'post_id');
+    }
+
+    public function isLikedBy(?User $user): bool
+    {
+        if (! $user) {
+            return false;
+        }
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    public function isOwnedBy(?User $user): bool
+    {
+        return $user && $this->user_id === $user->id;
+    }
+
+    public function getImageDataUriAttribute(): ?string
+    {
+        if (! $this->image_data || ! $this->image_mime) {
+            return null;
+        }
+        return 'data:'.$this->image_mime.';base64,'.$this->image_data;
     }
 }

@@ -23,7 +23,10 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard.home');
+            $user = Auth::user();
+            return $user && method_exists($user, 'isAdmin') && $user->isAdmin()
+                ? redirect()->route('admin.dashboard')
+                : redirect()->route('dashboard.home');
         }
         return view('auth.login');
     }
@@ -39,7 +42,35 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Sync expired subscriptions and deactivate user if their plan ran out
+            \App\Models\UserSubscription::syncExpired();
+            if ($user && method_exists($user, 'activeSubscription') && $user->role === \App\Models\User::ROLE_USER) {
+                $sub = $user->activeSubscription();
+                if (!$sub) {
+                    $user->deactivateForExpiredSubscription();
+                }
+            }
+
+            if ($user && method_exists($user, 'isActive') && ! $user->isActive()) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                $reason = $user->deactivated_reason ?: 'Akun Anda saat ini non-aktif. Hubungi admin untuk informasi lebih lanjut.';
+
+                return back()->withErrors([
+                    'email' => $reason ?: 'Akun Anda tidak aktif. Silakan perpanjang langganan.',
+                ])->with('deactivated_reason', $user->deactivated_reason);
+            }
+
             $request->session()->regenerate();
+
+            if ($user && method_exists($user, 'isAdmin') && $user->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->route('dashboard.home');
         }
 

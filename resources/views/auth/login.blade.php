@@ -62,12 +62,12 @@
                 </button>
                 
                 <div class="auth-divider">
-                    <span>Demo Akun Tersedia</span>
+                    <span>Akun Demo Tersedia</span>
                 </div>
-                
+
                 <div class="demo-accounts">
-                    <p>Email: admin@bookify.com</p>
-                    <p>Password: password123</p>
+                    <p><strong>Admin:</strong> super.admin@bookify.com / admin12345</p>
+                    <p><strong>User:</strong> toko@bookify.com / password123</p>
                 </div>
                 
                 <a href="{{ route('landing') }}" class="btn btn-text btn-block login-back-btn">

@@ -40,6 +40,22 @@
                     <img src="{{ asset('img/icons/community.png') }}" alt="Komunitas" class="nav-icon-img" style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;flex:0 0 14px;object-fit:contain;">
                     <span class="nav-label">Komunitas</span>
                 </a>
+                <a href="{{ route('subscription.index') }}" class="nav-item {{ request()->routeIs('subscription.index') || request()->routeIs('subscription.my') ? 'active' : '' }}">
+                    <img src="{{ asset('img/icons/insights.png') }}" alt="Langganan" class="nav-icon-img" style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;flex:0 0 14px;object-fit:contain;">
+                    <span class="nav-label">Langganan</span>
+                </a>
+                <a href="{{ route('subscription.payments') }}" class="nav-item {{ request()->routeIs('subscription.payments') ? 'active' : '' }}">
+                    <img src="{{ asset('img/icons/insights.png') }}" alt="Riwayat Pembayaran" class="nav-icon-img" style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;flex:0 0 14px;object-fit:contain;">
+                    <span class="nav-label">Riwayat Pembayaran</span>
+                </a>
+                <a href="{{ route('cart.index') }}" class="nav-item {{ request()->routeIs('cart.*') ? 'active' : '' }}">
+                    <img src="{{ asset('img/icons/stock.png') }}" alt="Keranjang" class="nav-icon-img" style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;flex:0 0 14px;object-fit:contain;">
+                    <span class="nav-label">Keranjang</span>
+                </a>
+                <a href="{{ route('marketplace.index') }}" class="nav-item {{ request()->routeIs('marketplace.*') ? 'active' : '' }}">
+                    <img src="{{ asset('img/icons/insights.png') }}" alt="Marketplace" class="nav-icon-img" style="width:14px;height:14px;min-width:14px;min-height:14px;max-width:14px;max-height:14px;flex:0 0 14px;object-fit:contain;">
+                    <span class="nav-label">Marketplace</span>
+                </a>
             </nav>
             <div class="sidebar-footer">
                 <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
@@ -57,14 +73,14 @@
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="top-bar-left">
-                    <label class="menu-toggle menu-toggle-open" for="sidebarToggle" aria-label="Open sidebar">☰</label>
+                    <label class="menu-toggle menu-toggle-open" for="sidebarToggle" aria-label="Open sidebar"><i data-lucide="menu" class="topbar-icon"></i></label>
                     <h2 id="pageTitle">@yield('page-title', 'Home')</h2>
                 </div>
                 <div class="top-bar-right">
-                    <button class="notification-btn">🔔</button>
+                    <button class="notification-btn" aria-label="Notifikasi"><i data-lucide="bell" class="topbar-icon"></i></button>
                     <div class="user-profile">
-                        <div class="profile-avatar profile-avatar-fallback">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
-                        <span class="profile-name">{{ explode(' ', $user->name)[0] }}</span>
+                        <div class="profile-avatar profile-avatar-fallback">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                        <span class="profile-name">{{ explode(' ', auth()->user()->name)[0] }}</span>
                     </div>
                 </div>
             </div>
@@ -78,3 +94,22 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+        }
+    });
+</script>
+@endpush
+
+@push('styles')
+<style>
+.topbar-icon { width: 20px; height: 20px; color: inherit; }
+.menu-toggle .topbar-icon { width: 22px; height: 22px; }
+.notification-btn .topbar-icon { width: 20px; height: 20px; color: #1e293b; }
+</style>
+@endpush

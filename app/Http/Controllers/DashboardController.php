@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\CommunityPost;
 use App\Models\CommunityComment;
+use App\Models\PostLike;
 use App\Services\ReportDataBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,16 +48,31 @@ class DashboardController extends Controller
     private function communityPosts(): array
     {
         return CommunityPost::query()
+            ->where('is_published', true)
             ->latest('id')
             ->get()
             ->map(fn (CommunityPost $post) => $this->decorateCommunityPost($post))
             ->all();
     }
 
+    private function canViewCommunityPost(CommunityPost $post, $user): bool
+    {
+        if ($post->is_published) {
+            return true;
+        }
+
+        if (! $user) {
+            return false;
+        }
+
+        return $post->isOwnedBy($user) || $user->isAdmin();
+    }
+
     private function decorateCommunityPost(CommunityPost $post): array
     {
         $contentWords = str_word_count(strip_tags($post->content));
         $readMinutes = max(1, (int) ceil($contentWords / 180));
+        $user = Auth::user();
 
         return [
             'id' => $post->id,
@@ -64,7 +80,9 @@ class DashboardController extends Controller
             'author' => $post->author_name,
             'author_role' => $post->author_role ?? 'UMKM',
             'avatar' => $post->avatar_url ?: 'https://ui-avatars.com/api/?name='.urlencode($post->author_name).'&background=0f5a34&color=fff',
-            'cover' => $post->cover_url ?: $post->avatar_url ?: 'https://ui-avatars.com/api/?name='.urlencode($post->title).'&background=0f5a34&color=fff&size=640',
+            'cover' => $post->image_data
+                ? 'data:'.($post->image_mime ?: 'image/jpeg').';base64,'.$post->image_data
+                : ($post->cover_url ?: $post->avatar_url ?: 'https://ui-avatars.com/api/?name='.urlencode($post->title).'&background=0f5a34&color=fff&size=640'),
             'category' => $post->category,
             'title' => $post->title,
             'excerpt' => $post->excerpt,
@@ -74,6 +92,8 @@ class DashboardController extends Controller
             'likes' => (int) $post->likes_count,
             'comments' => (int) $post->comments_count,
             'views' => number_format(((int) $post->likes_count + (int) $post->comments_count) * 7),
+            'liked' => $post->isLikedBy($user),
+            'is_owner' => $post->isOwnedBy($user),
         ];
     }
 
@@ -407,8 +427,9 @@ class DashboardController extends Controller
     private function findCommunityPost(int $postId): array
     {
         $post = CommunityPost::query()->find($postId);
+        $user = Auth::user();
 
-        abort_if(! $post, 404);
+        abort_if(! $post || ! $this->canViewCommunityPost($post, $user), 404);
 
         return $this->decorateCommunityPost($post);
     }
@@ -573,6 +594,7 @@ class DashboardController extends Controller
                 $product->save();
 
                 Transaction::create([
+                    'user_id' => Auth::id(),
                     'type' => $request->input('type'),
                     'item_name' => $itemName,
                     'category' => $request->input('category'),
@@ -583,6 +605,7 @@ class DashboardController extends Controller
                     'product_id' => $product->id,
                     'item_image_data' => $imagePayload['item_image_data'],
                     'item_image_mime' => $imagePayload['item_image_mime'],
+                    'status' => \App\Models\Transaction::STATUS_COMPLETED,
                 ]);
             });
 
@@ -590,6 +613,8 @@ class DashboardController extends Controller
         }
 
         Transaction::create([
+            'user_id' => Auth::id(),
+            'kind' => \App\Models\Transaction::KIND_BOOKKEEPING,
             'type' => $request->input('type'),
             'item_name' => $itemName,
             'category' => $request->input('category'),
@@ -600,6 +625,7 @@ class DashboardController extends Controller
             'product_id' => $product?->id,
             'item_image_data' => $imagePayload['item_image_data'],
             'item_image_mime' => $imagePayload['item_image_mime'],
+            'status' => \App\Models\Transaction::STATUS_COMPLETED,
         ]);
 
         return redirect()->route('dashboard.transactions')->with('success', 'Transaksi berhasil disimpan.');
@@ -795,14 +821,17 @@ class DashboardController extends Controller
         $validator = Validator::make($request->all(), [
             'category' => ['required', 'string', Rule::in($categories)],
             'title' => 'required|string|max:160',
-            'content' => 'required|string|min:100',
+            'content' => 'required|string|min:25',
+            'image' => ['nullable', 'string'],
         ], [
             'category.required' => 'Pilih salah satu kategori artikel.',
             'category.in' => 'Kategori yang dipilih tidak valid.',
             'title.required' => 'Judul artikel wajib diisi.',
             'title.max' => 'Judul maksimal 160 karakter.',
             'content.required' => 'Cerita Anda wajib diisi.',
-            'content.min' => 'Cerita minimal 100 karakter.',
+            'content.min' => 'Cerita minimal 25 karakter.',
+        ], [
+            'content.min' => 'Cerita minimal 25 karakter.',
         ]);
 
         if ($validator->fails()) {
@@ -820,16 +849,31 @@ class DashboardController extends Controller
         $authorName = $user?->name ?: 'UMKM Bookify';
         $avatar = 'https://ui-avatars.com/api/?name='.urlencode($authorName).'&background=0f5a34&color=fff';
 
+        $imageData = null;
+        $imageMime = null;
+        $imageValue = (string) $request->input('image', '');
+        if ($imageValue !== '' && preg_match('#^data:(image/(?:jpeg|png|webp));base64,(.+)$#i', $imageValue, $m)) {
+            $bin = base64_decode($m[2], true);
+            if ($bin !== false && strlen($bin) <= 2 * 1024 * 1024) {
+                $imageData = base64_encode($bin);
+                $imageMime = strtolower($m[1]);
+            }
+        }
+
         CommunityPost::create([
             'user_id' => $user?->id,
             'author_name' => $authorName,
             'author_role' => 'UMKM',
             'avatar_url' => $avatar,
             'cover_url' => $avatar,
+            'image_data' => $imageData,
+            'image_mime' => $imageMime,
             'category' => (string) $request->input('category'),
             'title' => $title,
             'excerpt' => $excerpt,
             'content' => $content,
+            'is_published' => true,
+            'published_at' => now(),
         ]);
 
         return redirect()->route('dashboard.community')->with('success', 'Artikel berhasil dibagikan ke komunitas.');
@@ -840,6 +884,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $postModel = CommunityPost::query()->findOrFail($post);
+        abort_unless($this->canViewCommunityPost($postModel, $user), 404);
         $post = $this->decorateCommunityPost($postModel);
         $comments = $this->getCommentsForPost($postModel);
 
@@ -849,6 +894,7 @@ class DashboardController extends Controller
     public function communityCommentStore(Request $request, int $post)
     {
         $postModel = CommunityPost::query()->findOrFail($post);
+        abort_unless($this->canViewCommunityPost($postModel, Auth::user()), 404);
 
         $validator = Validator::make($request->all(), [
             'body' => 'required|string|min:2|max:500',
@@ -887,15 +933,111 @@ class DashboardController extends Controller
     public function communityLikeToggle(int $post)
     {
         $postModel = CommunityPost::query()->findOrFail($post);
+        $user = Auth::user();
+        abort_unless($this->canViewCommunityPost($postModel, $user), 404);
 
-        $postModel->increment('likes_count');
+        $liked = DB::transaction(function () use ($postModel, $user) {
+            $existing = PostLike::where('post_id', $postModel->id)
+                ->where('user_id', $user->id)
+                ->first();
+            if ($existing) {
+                $existing->delete();
+                $postModel->decrement('likes_count');
+                return false;
+            }
+            PostLike::create([
+                'post_id' => $postModel->id,
+                'user_id' => $user->id,
+            ]);
+            $postModel->increment('likes_count');
+            return true;
+        });
 
         if (request()->wantsJson()) {
             return response()->json([
+                'liked' => $liked,
                 'likes' => (int) $postModel->fresh()->likes_count,
             ]);
         }
 
         return back();
+    }
+
+    public function communityEdit(int $post)
+    {
+        $user = Auth::user();
+        $postModel = CommunityPost::query()->findOrFail($post);
+        if (! $postModel->isOwnedBy($user)) {
+            abort(403);
+        }
+        $categories = ['Kisah Sukses', 'Tips & Trik', 'Tantangan', 'Lainnya'];
+        $post = $this->decorateCommunityPost($postModel);
+        return view('dashboard.community-edit', compact('user', 'post', 'categories'));
+    }
+
+    public function communityUpdate(Request $request, int $post)
+    {
+        $user = Auth::user();
+        $postModel = CommunityPost::query()->findOrFail($post);
+        if (! $postModel->isOwnedBy($user)) {
+            abort(403);
+        }
+        $categories = ['Kisah Sukses', 'Tips & Trik', 'Tantangan', 'Lainnya'];
+
+        $validator = Validator::make($request->all(), [
+            'category' => ['required', 'string', Rule::in($categories)],
+            'title' => 'required|string|max:160',
+            'content' => 'required|string|min:25',
+            'image' => ['nullable', 'string'],
+        ], [
+            'category.required' => 'Pilih salah satu kategori artikel.',
+            'category.in' => 'Kategori yang dipilih tidak valid.',
+            'title.required' => 'Judul artikel wajib diisi.',
+            'title.max' => 'Judul maksimal 160 karakter.',
+            'content.required' => 'Cerita Anda wajib diisi.',
+            'content.min' => 'Cerita minimal 25 karakter.',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $content = (string) $request->input('content');
+        $title = (string) $request->input('title');
+        $excerpt = mb_strimwidth(preg_replace('/\s+/', ' ', strip_tags($content)), 0, 180, '…');
+
+        $imageData = $postModel->image_data;
+        $imageMime = $postModel->image_mime;
+        $imageValue = (string) $request->input('image', '');
+        if ($imageValue !== '' && preg_match('#^data:(image/(?:jpeg|png|webp));base64,(.+)$#i', $imageValue, $m)) {
+            $bin = base64_decode($m[2], true);
+            if ($bin !== false && strlen($bin) <= 2 * 1024 * 1024) {
+                $imageData = base64_encode($bin);
+                $imageMime = strtolower($m[1]);
+            }
+        }
+
+        $postModel->update([
+            'category' => (string) $request->input('category'),
+            'title' => $title,
+            'excerpt' => $excerpt,
+            'content' => $content,
+            'image_data' => $imageData,
+            'image_mime' => $imageMime,
+            'cover_url' => $postModel->avatar_url,
+        ]);
+
+        return redirect()->route('dashboard.community.show', $postModel->id)->with('success', 'Artikel berhasil diperbarui.');
+    }
+
+    public function communityDestroy(int $post)
+    {
+        $user = Auth::user();
+        $postModel = CommunityPost::query()->findOrFail($post);
+        if (! $postModel->isOwnedBy($user)) {
+            abort(403);
+        }
+        $postModel->delete();
+        return redirect()->route('dashboard.community')->with('success', 'Artikel berhasil dihapus.');
     }
 }
