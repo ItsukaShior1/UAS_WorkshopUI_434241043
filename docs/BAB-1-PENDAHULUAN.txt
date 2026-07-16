@@ -1,0 +1,390 @@
+BAB 1
+PENDAHULUAN
+
+1.1 Paragraf Pengantar
+
+Perkembangan teknologi informasi yang semakin pesat telah membawa perubahan signifikan dalam berbagai aspek kehidupan, termasuk dalam dunia bisnis. UMKM (Usaha Mikro, Kecil, dan Menengah) merupakan salah satu sektor yang sangat terdampak oleh perkembangan teknologi ini. Banyak pelaku UMKM yang mulai beralih dari sistem pencatatan manual menuju sistem digital untuk meningkatkan efisiensi dan akurasi dalam pengelolaan bisnis mereka. Namun demikian, tidak sedikit pula pelaku UMKM yang masih menghadapi kendala, seperti keterbatasan pengetahuan teknologi, biaya yang tinggi untuk perangkat lunak berbayar, serta tidak tersedianya fitur yang sesuai dengan kebutuhan spesifik bisnis mereka.
+
+Bookify merupakan sebuah platform berbasis web yang dikembangkan untuk menjawab permasalahan tersebut. Bookify hadir sebagai solusi all-in-one bagi pelaku UMKM dalam mengelola pembukuan, inventori, laporan keuangan, serta komunitas bisnis dalam satu aplikasi terpadu. Bookify juga menyediakan fitur berlangganan paket, sehingga pengguna dapat memilih layanan yang sesuai dengan skala dan kebutuhan bisnisnya. Pada laporan ini, Bookify akan dibahas secara komprehensif, meliputi deskripsi topik, user story, use case, hingga use case specification sebagai dasar analisis kebutuhan sistem.
+
+
+1.2 Deskripsi Topik
+
+Bookify adalah aplikasi berbasis web yang ditujukan untuk membantu pelaku UMKM dalam mengelola operasional bisnis harian secara digital. Aplikasi ini dibangun menggunakan framework Laravel 13 dengan basis data MySQL, dan dirancang agar dapat diakses melalui browser desktop maupun mobile dengan tampilan yang responsif.
+
+Secara garis besar, Bookify menyediakan dua jenis paket langganan utama, yaitu:
+
+1. Paket Bookify App
+   Paket dasar yang mencakup fitur pembukuan (pemasukan dan pengeluaran), manajemen stok atau inventori produk, laporan keuangan yang dapat di-export ke PDF, serta dashboard ringkasan bisnis.
+
+2. Paket Bookify Marketplace
+   Paket lanjutan yang mencakup seluruh fitur pada Paket Bookify App, ditambah dengan fitur integrasi marketplace seperti terhubung ke toko online, sinkronisasi produk, dan kelola pesanan dari berbagai marketplace dalam satu dasbor.
+
+Kedua paket tersebut tersedia dalam dua periode penagihan, yaitu bulanan dan tahunan, sehingga pengguna dapat memilih sesuai kebutuhan. Pengguna yang sudah berlangganan Paket Bookify App akan secara otomatis mendapatkan diskon khusus ketika melakukan upgrade ke Paket Bookify Marketplace, sebagai bentuk apresiasi atas loyalitas pengguna.
+
+Scope proyek Bookify mencakup:
+
+a. Modul Autentikasi
+   Sistem login dan logout, dengan perbedaan hak akses antara pengguna biasa (user) dan administrator (admin).
+
+b. Modul Pembukuan
+   Pencatatan transaksi pemasukan dan pengeluaran, kategori transaksi, unggah foto bukti transaksi, dan pencarian transaksi berdasarkan kata kunci, tipe, maupun kategori.
+
+c. Modul Stok atau Inventori
+   Pengelolaan daftar produk, pencatatan stok saat ini, stok minimum, harga jual, gambar produk, serta status stok (Aman, Rendah, Kritis). Termasuk riwayat transaksi per produk.
+
+d. Modul Laporan
+   Pembuatan laporan keuangan sederhana dalam bentuk tabel dan grafik, serta fitur export laporan ke PDF.
+
+e. Modul Komunitas
+   Forum diskusi antar pengguna Bookify untuk saling berbagi tips, bertanya, dan memberikan like pada postingan.
+
+f. Modul Insight
+   Halaman ringkasan performa bisnis pengguna dalam bentuk grafik dan statistik.
+
+g. Modul Berlangganan
+   Pemilihan paket langganan (App atau Marketplace, bulanan atau tahunan), proses checkout, integrasi pembayaran QRIS, serta pencatatan riwayat pembayaran. Tersedia fitur upgrade dengan diskon otomatis dan pembatalan langganan.
+
+h. Modul Keranjang
+   Pengguna dapat menambahkan beberapa item sebelum melakukan checkout, dengan ringkasan belanja otomatis.
+
+i. Modul Marketplace Integration
+   Pengelolaan koneksi ke marketplace eksternal (seperti Shopee, Tokopedia, dan lain-lain) dengan fitur aktif atau nonaktif koneksi.
+
+j. Modul Manajemen Admin
+   Admin dapat mengelola pengguna (lihat, edit, aktifkan atau nonaktifkan, hapus), mengelola artikel atau konten, mengelola paket langganan (termasuk pengaturan diskon upgrade), memantau seluruh langganan pengguna, serta memantau dan mengelola transaksi pembayaran (bisa melakukan pembatalan dan refund).
+
+
+1.3 User Story
+
+User story adalah pernyataan sederhana dalam sudut pandang pengguna yang mendeskripsikan fitur atau fungsi yang diinginkan dari sebuah sistem. Berikut adalah user story untuk aplikasi Bookify:
+
+1. Sebagai pengguna UMKM, saya ingin mencatat setiap transaksi pemasukan dan pengeluaran dengan mudah, agar pembukuan usaha saya lebih rapi dan terorganisir.
+
+2. Sebagai pengguna UMKM, saya ingin mengelola daftar produk beserta stoknya, agar saya dapat memantau ketersediaan barang dan mengetahui kapan harus melakukan restock.
+
+3. Sebagai pengguna UMKM, saya ingin melihat ringkasan performa bisnis saya dalam bentuk grafik dan statistik, agar saya dapat mengambil keputusan bisnis dengan lebih baik.
+
+4. Sebagai pengguna UMKM, saya ingin mengunduh laporan keuangan dalam bentuk PDF, agar saya dapat menyimpannya atau membagikannya kepada pihak lain seperti bank atau konsultan pajak.
+
+5. Sebagai pengguna UMKM, saya ingin berdiskusi dengan pengguna lain melalui forum komunitas, agar saya dapat saling bertukar informasi dan pengalaman seputar pengelolaan usaha.
+
+6. Sebagai pengguna UMKM, saya ingin memilih paket langganan yang sesuai dengan kebutuhan dan budget saya, baik bulanan maupun tahunan.
+
+7. Sebagai pengguna, saya ingin mendapatkan diskon otomatis ketika melakukan upgrade dari paket dasar ke paket yang lebih tinggi, agar saya merasa dihargai sebagai pelanggan setia.
+
+8. Sebagai pengguna, saya ingin melihat riwayat pembayaran langganan saya, agar saya dapat memantau transaksi yang pernah dilakukan.
+
+9. Sebagai pengguna, saya ingin menambahkan beberapa item ke dalam keranjang sebelum checkout, agar saya dapat mengelola pembelian dengan lebih fleksibel.
+
+10. Sebagai pengguna, saya ingin menghubungkan toko online saya di marketplace ke Bookify, agar saya dapat mengelola semua penjualan dari satu tempat.
+
+11. Sebagai admin, saya ingin mengelola seluruh pengguna Bookify, termasuk mengaktifkan, menonaktifkan, mengedit, dan menghapus akun, agar ekosistem pengguna tetap terjaga kualitasnya.
+
+12. Sebagai admin, saya ingin mengelola paket langganan yang ditawarkan, termasuk harga dan diskon upgrade, agar strategi penawaran dapat disesuaikan dengan kondisi bisnis.
+
+13. Sebagai admin, saya ingin memantau seluruh langganan aktif pengguna dan melakukan pembatalan atau refund jika diperlukan, agar administrasi keuangan tetap terkontrol.
+
+
+1.4 Use Case
+
+Use case adalah representasi fungsionalitas sistem yang dilihat dari sudut pandang pengguna (aktor). Berikut adalah daftar use case utama pada aplikasi Bookify:
+
+Aktor:
+1. Pengguna (User) : pelaku UMKM yang menggunakan Bookify untuk mengelola bisnisnya.
+2. Administrator (Admin) : pihak yang mengelola sistem, pengguna, konten, dan transaksi.
+
+Daftar Use Case:
+
+A. Use Case untuk Aktor Pengguna (User):
+UC-01 : Login ke Sistem
+UC-02 : Melakukan Logout dari Sistem
+UC-03 : Mencatat Transaksi Pemasukan
+UC-04 : Mencatat Transaksi Pengeluaran
+UC-05 : Melihat Daftar Transaksi
+UC-06 : Mencari dan Memfilter Transaksi
+UC-07 : Menambahkan Produk Baru
+UC-08 : Mengedit Data Produk
+UC-09 : Menghapus Produk
+UC-10 : Melihat Detail Produk dan Riwayat Transaksinya
+UC-11 : Melihat Insight Bisnis
+UC-12 : Mengunduh Laporan PDF
+UC-13 : Membuat Postingan di Komunitas
+UC-14 : Mengedit Postingan Sendiri
+UC-15 : Menghapus Postingan Sendiri
+UC-16 : Memberikan Komentar pada Postingan
+UC-17 : Menyukai Postingan
+UC-18 : Melihat Daftar Paket Langganan
+UC-19 : Melakukan Checkout Paket Langganan
+UC-20 : Membayar Paket Langganan
+UC-21 : Membatalkan Langganan Aktif
+UC-22 : Melihat Riwayat Pembayaran Langganan
+UC-23 : Menambahkan Paket ke Keranjang
+UC-24 : Mengelola Item di Keranjang
+UC-25 : Melakukan Checkout dari Keranjang
+UC-26 : Menghubungkan Akun Marketplace
+UC-27 : Mengaktifkan atau Menonaktifkan Koneksi Marketplace
+UC-28 : Menghapus Koneksi Marketplace
+
+B. Use Case untuk Aktor Administrator (Admin):
+UC-29 : Melihat Dashboard Admin
+UC-30 : Mengelola Pengguna (Lihat, Tambah, Edit, Aktif/Nonaktif, Hapus)
+UC-31 : Mengelola Artikel atau Konten
+UC-32 : Mengelola Paket Langganan (CRUD dan Pengaturan Diskon Upgrade)
+UC-33 : Memantau Daftar Langganan Pengguna
+UC-34 : Memantau Transaksi Pembayaran Langganan
+UC-35 : Membatalkan Transaksi Pembayaran
+UC-36 : Melakukan Refund Transaksi Pembayaran
+
+
+1.5 Use Case Specification
+
+Use case specification adalah penjabaran detail dari setiap use case yang mencakup nama use case, aktor, deskripsi, prasyarat, alur utama, alur alternatif, dan kondisi akhir. Berikut adalah spesifikasi untuk use case-use case utama Bookify:
+
+==================================================
+Spesifikasi Use Case UC-01: Login ke Sistem
+==================================================
+Nama Use Case       : Login ke Sistem
+Aktor               : Pengguna, Administrator
+Deskripsi           : Pengguna atau admin memasukkan kredensial (email dan password) untuk masuk ke dalam sistem Bookify.
+Prasyarat           : Pengguna belum terautentikasi dan memiliki akun yang sudah terdaftar di sistem.
+Alur Utama          :
+  1. Pengguna membuka halaman login.
+  2. Sistem menampilkan form login dengan kolom email dan password.
+  3. Pengguna mengisi email dan password, lalu menekan tombol Masuk.
+  4. Sistem memvalidasi kredensial.
+  5. Sistem mengarahkan pengguna ke dashboard sesuai rolenya (user ke Dashboard User, admin ke Dashboard Admin).
+Kondisi Akhir       : Pengguna berhasil masuk ke sistem dan dapat mengakses fitur sesuai hak aksesnya.
+Alur Alternatif     :
+  - Jika email atau password salah, sistem menampilkan pesan error dan pengguna diminta mencoba kembali.
+
+==================================================
+Spesifikasi Use Case UC-03: Mencatat Transaksi Pemasukan
+==================================================
+Nama Use Case       : Mencatat Transaksi Pemasukan
+Aktor               : Pengguna
+Deskripsi           : Pengguna menambahkan data transaksi dengan tipe pemasukan ke dalam sistem pembukuan.
+Prasyarat           : Pengguna sudah login dan berada di halaman daftar transaksi.
+Alur Utama          :
+  1. Pengguna membuka halaman Transaksi.
+  2. Pengguna menekan tombol Tambah Transaksi.
+  3. Sistem menampilkan form transaksi dengan opsi tipe Pemasukan atau Pengeluaran.
+  4. Pengguna memilih tipe Pemasukan.
+  5. Pengguna mengisi nama item, kategori, jumlah, satuan (opsional), harga satuan, catatan, dan mengunggah gambar bukti (opsional).
+  6. Pengguna menekan tombol Simpan.
+  7. Sistem memvalidasi data dan menyimpannya ke basis data.
+  8. Sistem menampilkan pesan sukses dan daftar transaksi diperbarui.
+Kondisi Akhir       : Data transaksi pemasukan tersimpan dan muncul di daftar transaksi.
+Alur Alternatif     :
+  - Jika data tidak valid, sistem menampilkan pesan error pada field yang bermasalah.
+
+==================================================
+Spesifikasi Use Case UC-07: Menambahkan Produk Baru
+==================================================
+Nama Use Case       : Menambahkan Produk Baru
+Aktor               : Pengguna
+Deskripsi           : Pengguna menambahkan produk baru ke dalam daftar inventori.
+Prasyarat           : Pengguna sudah login dan berada di halaman Stok.
+Alur Utama          :
+  1. Pengguna membuka halaman Stok.
+  2. Pengguna menekan tombol Tambah Produk.
+  3. Sistem menampilkan form produk dengan kolom: nama, kategori, harga, stok awal, stok minimum, dan unggah gambar.
+  4. Pengguna melengkapi seluruh field wajib dan menekan Simpan.
+  5. Sistem memvalidasi dan menyimpan data produk ke basis data.
+  6. Sistem menampilkan pesan sukses dan daftar produk diperbarui.
+Kondisi Akhir       : Produk baru tersimpan dan muncul di tabel stok dengan status yang dihitung otomatis.
+Alur Alternatif     :
+  - Jika field wajib tidak diisi atau format gambar tidak sesuai, sistem menampilkan pesan error.
+
+==================================================
+Spesifikasi Use Case UC-10: Melihat Detail Produk dan Riwayat Transaksinya
+==================================================
+Nama Use Case       : Melihat Detail Produk dan Riwayat Transaksi
+Aktor               : Pengguna
+Deskripsi           : Pengguna membuka halaman detail sebuah produk untuk melihat informasi stok, ringkasan aktivitas, dan tabel riwayat transaksi terkait produk tersebut.
+Prasyarat           : Produk sudah ada di basis data dan pengguna sudah login.
+Alur Utama          :
+  1. Pengguna membuka halaman Stok.
+  2. Pengguna memilih salah satu produk dari daftar.
+  3. Sistem menampilkan halaman detail produk.
+  4. Halaman detail menampilkan: gambar produk, nama, kategori, harga, status stok, stok saat ini, stok minimum, indikator progress stok.
+  5. Sistem juga menampilkan ringkasan aktivitas (total transaksi, stok keluar, stok masuk, nilai perputaran) dan tabel riwayat transaksi (tanggal, tipe, jumlah, harga satuan, total, catatan).
+Kondisi Akhir       : Pengguna memperoleh informasi lengkap tentang produk tersebut.
+Alur Alternatif     :
+  - Jika belum ada transaksi terkait produk, sistem menampilkan pesan kosong pada tabel riwayat.
+
+==================================================
+Spesifikasi Use Case UC-12: Mengunduh Laporan PDF
+==================================================
+Nama Use Case       : Mengunduh Laporan Keuangan PDF
+Aktor               : Pengguna
+Deskripsi           : Pengguna mengunduh laporan ringkasan keuangannya dalam format PDF.
+Prasyarat           : Pengguna sudah login dan minimal sudah memiliki satu data transaksi.
+Alur Utama          :
+  1. Pengguna membuka halaman Laporan.
+  2. Pengguna menekan tombol Unduh PDF.
+  3. Sistem memproses data laporan dan menghasilkan file PDF.
+  4. Browser secara otomatis mengunduh file PDF.
+Kondisi Akhir       : File PDF berhasil diunduh ke perangkat pengguna.
+Alur Alternatif     :
+  - Jika data kosong, sistem tetap menghasilkan laporan dengan pesan "Belum ada data".
+
+==================================================
+Spesifikasi Use Case UC-13: Membuat Postingan di Komunitas
+==================================================
+Nama Use Case       : Membuat Postingan di Komunitas
+Aktor               : Pengguna
+Deskripsi           : Pengguna membuat postingan baru pada forum komunitas Bookify untuk berdiskusi dengan pengguna lain.
+Prasyarat           : Pengguna sudah login.
+Alur Utama          :
+  1. Pengguna membuka halaman Komunitas.
+  2. Pengguna menekan tombol Buat Postingan.
+  3. Sistem menampilkan form dengan kolom judul, kategori, dan isi konten.
+  4. Pengguna melengkapi form dan menekan tombol Publikasikan.
+  5. Sistem menyimpan postingan ke basis data.
+  6. Sistem menampilkan pesan sukses dan postingan muncul di daftar komunitas.
+Kondisi Akhir       : Postingan baru tampil pada daftar komunitas dan dapat dilihat oleh pengguna lain.
+
+==================================================
+Spesifikasi Use Case UC-18: Melihat Daftar Paket Langganan
+==================================================
+Nama Use Case       : Melihat Daftar Paket Langganan
+Aktor               : Pengguna
+Deskripsi           : Pengguna melihat semua paket langganan yang ditawarkan beserta harga dan fiturnya.
+Prasyarat           : Pengguna sudah login.
+Alur Utama          :
+  1. Pengguna membuka halaman Langganan.
+  2. Sistem menampilkan banner informasi tentang penawaran upgrade (jika pengguna sudah memiliki langganan aktif pada paket dasar).
+  3. Sistem menampilkan dua kategori paket: Paket Bookify App dan Paket Bookify Marketplace, masing-masing dengan varian Bulanan dan Tahunan.
+  4. Sistem menampilkan harga asli (coret) dan harga setelah diskon (jika berlaku) untuk paket Marketplace bagi pengguna aktif App.
+  5. Pengguna dapat memilih paket untuk melihat detail atau langsung melakukan pembelian.
+Kondisi Akhir       : Pengguna memperoleh informasi lengkap tentang semua paket yang tersedia.
+
+==================================================
+Spesifikasi Use Case UC-20: Membayar Paket Langganan
+==================================================
+Nama Use Case       : Membayar Paket Langganan
+Aktor               : Pengguna
+Deskripsi           : Pengguna menyelesaikan pembayaran untuk paket langganan yang dipilih melalui metode QRIS.
+Prasyarat           : Pengguna sudah memilih paket dan berada di halaman Checkout dengan data pemesan yang sudah diisi.
+Alur Utama          :
+  1. Pengguna membuka halaman Checkout dari paket yang dipilih.
+  2. Sistem menampilkan ringkasan pesanan dan nominal yang harus dibayar.
+  3. Pengguna memilih metode pembayaran QRIS.
+  4. Sistem menampilkan kode QR untuk pembayaran.
+  5. Pengguna mengonfirmasi pembayaran.
+  6. Sistem memvalidasi dan membuat catatan langganan baru serta transaksi pembayaran.
+  7. Sistem menampilkan pesan sukses dan mengarahkan pengguna ke halaman Langganan Saya.
+Kondisi Akhir       : Pengguna memiliki langganan aktif dan transaksi tercatat di Riwayat Pembayaran.
+Alur Alternatif     :
+  - Jika upgrade berlaku, sistem menerapkan diskon otomatis dan menampilkan harga diskon serta total yang harus dibayar.
+
+==================================================
+Spesifikasi Use Case UC-21: Membatalkan Langganan Aktif
+==================================================
+Nama Use Case       : Membatalkan Langganan Aktif
+Aktor               : Pengguna
+Deskripsi           : Pengguna membatalkan langganan aktif miliknya sebelum periode berakhir.
+Prasyarat           : Pengguna sudah login dan memiliki langganan aktif.
+Alur Utama          :
+  1. Pengguna membuka halaman Langganan Saya.
+  2. Pengguna menekan tombol Batalkan pada paket aktif.
+  3. Sistem menampilkan dialog konfirmasi.
+  4. Pengguna mengonfirmasi pembatalan.
+  5. Sistem memperbarui status langganan menjadi nonaktif.
+Kondisi Akhir       : Langganan pengguna dinonaktifkan dan tidak ada perpanjangan otomatis.
+
+==================================================
+Spesifikasi Use Case UC-25: Melakukan Checkout dari Keranjang
+==================================================
+Nama Use Case       : Melakukan Checkout dari Keranjang
+Aktor               : Pengguna
+Deskripsi           : Pengguna menyelesaikan pembelian untuk seluruh item yang ada di dalam keranjang.
+Prasyarat           : Minimal terdapat satu item di dalam keranjang dan pengguna sudah login.
+Alur Utama          :
+  1. Pengguna membuka halaman Keranjang.
+  2. Pengguna memilih item yang ingin di-checkout (minimal satu).
+  3. Pengguna menekan tombol Lanjut ke Pembayaran.
+  4. Sistem menampilkan ringkasan belanja dan total tagihan.
+  5. Pengguna mengonfirmasi pesanan.
+  6. Sistem memproses pesanan, membuat catatan langganan baru (jika item adalah paket), dan mencatat transaksi.
+  7. Sistem menampilkan pesan sukses dan mengarahkan pengguna ke halaman Langganan Saya atau beranda.
+Kondisi Akhir       : Item-item di keranjang berhasil diproses dan transaksi tercatat.
+
+==================================================
+Spesifikasi Use Case UC-26: Menghubungkan Akun Marketplace
+==================================================
+Nama Use Case       : Menghubungkan Akun Marketplace
+Aktor               : Pengguna
+Deskripsi           : Pengguna menghubungkan akun marketplace eksternal (misalnya Shopee, Tokopedia) ke Bookify agar aktivitas toko online dapat dikelola dari satu tempat.
+Prasyarat           : Pengguna sudah login dan memiliki paket Marketplace aktif.
+Alur Utama          :
+  1. Pengguna membuka halaman Marketplace.
+  2. Pengguna menekan tombol Hubungkan Marketplace.
+  3. Sistem menampilkan form dengan kolom nama toko, platform, dan URL toko.
+  4. Pengguna melengkapi form dan menekan Simpan.
+  5. Sistem menyimpan koneksi dan menampilkannya pada daftar koneksi marketplace.
+Kondisi Akhir       : Koneksi marketplace tersimpan dan dapat diaktifkan atau dinonaktifkan.
+
+==================================================
+Spesifikasi Use Case UC-30: Mengelola Pengguna
+==================================================
+Nama Use Case       : Mengelola Pengguna
+Aktor               : Administrator
+Deskripsi           : Admin mengelola seluruh akun pengguna Bookify, termasuk melihat daftar, menambah, mengedit, mengaktifkan atau menonaktifkan, serta menghapus akun.
+Prasyarat           : Admin sudah login ke sistem.
+Alur Utama          :
+  1. Admin membuka halaman Kelola Pengguna.
+  2. Sistem menampilkan daftar seluruh pengguna dengan informasi nama, email, peran, dan status aktif.
+  3. Admin dapat melakukan salah satu aksi:
+     a. Menambah pengguna baru dengan mengisi nama, email, password, dan peran.
+     b. Mengedit data pengguna.
+     c. Mengaktifkan atau menonaktifkan akun pengguna.
+     d. Menghapus akun pengguna.
+  4. Sistem memvalidasi dan menyimpan perubahan ke basis data.
+  5. Sistem menampilkan pesan sukses.
+Kondisi Akhir       : Data pengguna di basis data sesuai dengan aksi yang dilakukan admin.
+
+==================================================
+Spesifikasi Use Case UC-32: Mengelola Paket Langganan
+==================================================
+Nama Use Case       : Mengelola Paket Langganan
+Aktor               : Administrator
+Deskripsi           : Admin mengelola paket langganan yang ditawarkan kepada pengguna, termasuk nama paket, harga, periode, dan persentase diskon upgrade.
+Prasyarat           : Admin sudah login ke sistem.
+Alur Utama          :
+  1. Admin membuka halaman Kelola Paket.
+  2. Sistem menampilkan daftar paket langganan beserta harga, periode, dan diskon upgrade.
+  3. Admin dapat melakukan salah satu aksi:
+     a. Menambahkan paket baru.
+     b. Mengedit paket yang ada (termasuk mengubah harga dan persentase diskon upgrade).
+     c. Mengaktifkan atau menonaktifkan paket.
+     d. Menghapus paket.
+  4. Sistem memvalidasi data (harga harus lebih dari nol, diskon antara 0 sampai 100 persen).
+  5. Sistem menyimpan perubahan ke basis data.
+Kondisi Akhir       : Paket langganan yang ditampilkan ke pengguna sesuai dengan konfigurasi terbaru dari admin.
+
+==================================================
+Spesifikasi Use Case UC-35 dan UC-36: Membatalkan dan Refund Transaksi Pembayaran
+==================================================
+Nama Use Case       : Membatalkan atau Refund Transaksi Pembayaran Langganan
+Aktor               : Administrator
+Deskripsi           : Admin membatalkan transaksi pembayaran langganan, dengan opsi melakukan refund sebagian atau penuh kepada pengguna.
+Prasyarat           : Admin sudah login dan transaksi berstatus Berhasil.
+Alur Utama          :
+  1. Admin membuka halaman Transaksi pada panel admin.
+  2. Admin memilih salah satu transaksi dari daftar.
+  3. Sistem menampilkan detail transaksi dan formulir pembatalan.
+  4. Admin mengisi alasan pembatalan, memilih opsi refund (ya atau tidak), dan mengisi nominal refund (jika ya).
+  5. Admin menekan tombol Proses Pembatalan.
+  6. Sistem memperbarui status transaksi menjadi Dibatalkan atau Direfund dan menyimpan nomor referensi refund.
+  7. Sistem menampilkan pesan sukses.
+Kondisi Akhir       : Transaksi berstatus Dibatalkan atau Direfund dan tidak lagi dapat dibatalkan.
+Alur Alternatif     :
+  - Jika transaksi sudah berstatus Dibatalkan atau Direfund, sistem menolak aksi dan menampilkan pesan kesalahan.
+
+
+----------------------------------------------------------
+Catatan Penutup BAB 1
+----------------------------------------------------------
+Dokumen BAB 1 ini membahas pendahuluan proyek Bookify yang terdiri atas latar belakang singkat, deskripsi topik beserta scope proyek, user story yang merepresentasikan kebutuhan pengguna, daftar use case yang menunjukkan fungsionalitas sistem, serta spesifikasi use case untuk use case utama. Penjelasan lebih lanjut mengenai analisis kebutuhan secara terperinci, perancangan basis data, serta implementasi sistem akan dibahas pada bab-bab selanjutnya.

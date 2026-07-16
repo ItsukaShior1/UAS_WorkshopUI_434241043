@@ -1,0 +1,497 @@
+BAB 2
+DESAIN SISTEM
+
+2.1 Paragraf Pengantar
+
+Bab ini membahas desain sistem aplikasi Bookify secara keseluruhan, mulai dari gambaran wireframe sebagai rancangan antarmuka awal, hingga implementasi frontend dari setiap halaman yang dikembangkan. Selain itu, bab ini juga memuat bagian Pengujian Sistem yang menjelaskan metode, skenario, serta hasil pengujian yang dilakukan untuk memastikan bahwa setiap fitur pada Bookify berjalan sesuai dengan kebutuhan dan spesifikasi yang telah ditetapkan pada BAB 1.
+
+2.2 Wireframe
+
+(Tuliskan wireframe dari setiap halaman utama Bookify yang sudah dibuat menggunakan tools perancangan seperti Figma, Balsamiq, atau MagicPattern. Sertakan juga penjelasan singkat untuk setiap wireframe, meliputi tata letak elemen, navigasi, dan alur penggunaannya. Wireframe dapat dilampirkan dalam bentuk gambar atau tautan ke file desain. Bagian ini dikerjakan secara terpisah oleh penulis.)
+
+2.3 Front End (Implementasi Antarmuka)
+
+(Tuliskan hasil implementasi setiap halaman Bookify berdasarkan wireframe yang telah dirancang. Setiap halaman disertai tangkapan layar (screenshot) dari tampilan aplikasi yang sudah berjalan. Halaman yang didokumentasikan meliputi: Landing Page, Arsip Artikel, Detail Artikel, Katalog Produk, Detail Produk, Keranjang, Pembayaran, History Transaksi, Dashboard, Kelola Artikel, Kelola Produk, Kelola Pengguna, Kelola Transaksi, serta halaman lain yang relevan. Berikan penjelasan singkat pada setiap halaman untuk menggambarkan fungsi dan komponen antarmukanya. Bagian ini dikerjakan secara terpisah oleh penulis.)
+
+2.4 Pengujian Sistem
+
+Pengujian sistem merupakan tahapan penting dalam pengembangan perangkat lunak untuk memastikan bahwa aplikasi yang dibangun sudah berjalan sesuai dengan spesifikasi kebutuhan. Pengujian pada aplikasi Bookify dilakukan dengan menggunakan dua metode, yaitu Black-Box Testing untuk menguji fungsionalitas dari sudut pandang pengguna, serta User Acceptance Test (UAT) untuk memvalidasi kesesuaian aplikasi terhadap kebutuhan pengguna akhir.
+
+2.4.1 Metode Pengujian
+
+a. Black-Box Testing
+   Black-box testing adalah metode pengujian yang berfokus pada masukan (input) dan keluaran (output) dari sebuah fungsi tanpa memperhatikan struktur internal kode program. Pada Bookify, metode ini digunakan untuk memverifikasi bahwa setiap tombol, form, menu, dan alur navigasi dapat berjalan sesuai dengan spesifikasi use case yang telah dibuat pada BAB 1.
+
+b. User Acceptance Test (UAT)
+   User Acceptance Test adalah pengujian yang dilakukan oleh pengguna akhir (dalam hal ini adalah pelaku UMKM) untuk memastikan bahwa aplikasi yang dikembangkan sudah dapat memenuhi kebutuhan dan harapan mereka. UAT pada Bookify dilakukan dengan meminta beberapa pengguna mencoba aplikasi secara langsung, kemudian memberikan masukan terkait pengalaman penggunaan, kemudahan navigasi, dan kesesuaian fitur.
+
+2.4.2 Skenario dan Kasus Uji
+
+Skenario pengujian disusun berdasarkan use case yang telah didefinisikan pada BAB 1. Setiap skenario diuraikan menjadi beberapa kasus uji (test case) yang mencakup identifikasi kasus uji, langkah pengujian, data masukan, hasil yang diharapkan, dan status kelulusan (Lulus atau Tidak Lulus). Pengujian dilakukan pada lingkungan pengembangan (development environment) menggunakan browser Google Chrome versi terbaru dengan resolusi desktop 1366x768 dan tampilan mobile pada lebar 720 piksel untuk menguji sifat responsif aplikasi.
+
+Tabel 2.1 Hasil Pengujian Modul Autentikasi
+
+ID Kasus Uji       : TC-AUTH-01
+Nama Kasus Uji     : Login dengan kredensial benar (User)
+Use Case Terkait   : UC-01
+Langkah Pengujian  :
+  1. Buka halaman /login.
+  2. Masukkan email pengguna yang valid.
+  3. Masukkan password yang benar.
+  4. Klik tombol Masuk.
+Data Masukan       : email = user@bookify.test, password = password123
+Hasil yang Diharapkan : Sistem mengarahkan pengguna ke Dashboard User.
+Status             : Lulus
+
+ID Kasus Uji       : TC-AUTH-02
+Nama Kasus Uji     : Login dengan kredensial benar (Admin)
+Use Case Terkait   : UC-01
+Langkah Pengujian  :
+  1. Buka halaman /login.
+  2. Masukkan email admin yang valid.
+  3. Masukkan password yang benar.
+  4. Klik tombol Masuk.
+Data Masukan       : email = admin@bookify.test, password = password123
+Hasil yang Diharapkan : Sistem mengarahkan admin ke Dashboard Admin.
+Status             : Lulus
+
+ID Kasus Uji       : TC-AUTH-03
+Nama Kasus Uji     : Login dengan password salah
+Use Case Terkait   : UC-01
+Langkah Pengujian  :
+  1. Buka halaman /login.
+  2. Masukkan email yang valid.
+  3. Masukkan password yang salah.
+  4. Klik tombol Masuk.
+Data Masukan       : email = user@bookify.test, password = salahpassword
+Hasil yang Diharapkan : Sistem menampilkan pesan error "Email atau password salah".
+Status             : Lulus
+
+ID Kasus Uji       : TC-AUTH-04
+Nama Kasus Uji     : Logout dari sistem
+Use Case Terkait   : UC-02
+Langkah Pengujian  :
+  1. Login terlebih dahulu.
+  2. Klik tombol avatar atau menu pengguna di pojok kanan atas.
+  3. Klik tombol Logout.
+Data Masukan       : -
+Hasil yang Diharapkan : Sistem mengarahkan ke halaman Landing dan sesi pengguna dihapus.
+Status             : Lulus
+
+Tabel 2.2 Hasil Pengujian Modul Pembukuan
+
+ID Kasus Uji       : TC-BOOK-01
+Nama Kasus Uji     : Menambahkan transaksi pemasukan
+Use Case Terkait   : UC-03
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /dashboard/transactions.
+  3. Klik tombol Tambah Transaksi.
+  4. Pilih tipe Pemasukan.
+  5. Isi nama item, kategori, jumlah, harga satuan, dan catatan.
+  6. Klik tombol Simpan.
+Data Masukan       : item = "Penjualan Produk A", kategori = "Penjualan", jumlah = 5, harga satuan = 25000
+Hasil yang Diharapkan : Transaksi tersimpan dan muncul di daftar transaksi.
+Status             : Lulus
+
+ID Kasus Uji       : TC-BOOK-02
+Nama Kasus Uji     : Menambahkan transaksi pengeluaran
+Use Case Terkait   : UC-04
+Langkah Pengujian  : Sama seperti TC-BOOK-01, namun tipe dipilih Pengeluaran.
+Data Masukan       : item = "Beli bahan baku", kategori = "Operasional", jumlah = 2, harga satuan = 50000
+Hasil yang Diharapkan : Transaksi pengeluaran tersimpan.
+Status             : Lulus
+
+ID Kasus Uji       : TC-BOOK-03
+Nama Kasus Uji     : Mencari transaksi berdasarkan kata kunci
+Use Case Terkait   : UC-06
+Langkah Pengujian  :
+  1. Buka halaman Transaksi.
+  2. Ketik kata kunci pada kolom pencarian.
+  3. Klik tombol Cari.
+Data Masukan       : kata kunci = "bahan"
+Hasil yang Diharapkan : Sistem menampilkan hanya transaksi yang mengandung kata "bahan".
+Status             : Lulus
+
+ID Kasus Uji       : TC-BOOK-04
+Nama Kasus Uji     : Memfilter transaksi berdasarkan kategori
+Use Case Terkait   : UC-06
+Langkah Pengujian  :
+  1. Buka halaman Transaksi.
+  2. Pilih kategori pada dropdown filter.
+  3. Klik tombol Filter.
+Data Masukan       : kategori = "Penjualan"
+Hasil yang Diharapkan : Sistem menampilkan hanya transaksi berkategori Penjualan.
+Status             : Lulus
+
+Tabel 2.3 Hasil Pengujian Modul Stok atau Inventori
+
+ID Kasus Uji       : TC-STK-01
+Nama Kasus Uji     : Menambahkan produk baru
+Use Case Terkait   : UC-07
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /dashboard/stock.
+  3. Klik tombol Tambah Produk.
+  4. Isi nama, kategori, harga, stok awal, dan stok minimum.
+  5. Klik tombol Simpan.
+Data Masukan       : nama = "Buku Tulis", kategori = "ATK", harga = 5000, stok = 50, minimum = 10
+Hasil yang Diharapkan : Produk baru tersimpan dan muncul di tabel stok.
+Status             : Lulus
+
+ID Kasus Uji       : TC-STK-02
+Nama Kasus Uji     : Mengedit data produk
+Use Case Terkait   : UC-08
+Langkah Pengujian  :
+  1. Buka halaman Stok.
+  2. Klik ikon edit pada salah satu produk.
+  3. Ubah nilai stok atau harga.
+  4. Klik Simpan.
+Data Masukan       : stok diubah dari 50 menjadi 30
+Hasil yang Diharapkan : Data produk terupdate di tabel.
+Status             : Lulus
+
+ID Kasus Uji       : TC-STK-03
+Nama Kasus Uji     : Melihat status stok kritis
+Use Case Terkait   : UC-07 (logika status)
+Langkah Pengujian  :
+  1. Buat produk dengan stok = 2 dan minimum = 10.
+  2. Buka halaman Stok.
+Data Masukan       : stok = 2, minimum = 10
+Hasil yang Diharapkan : Produk ditampilkan dengan label status "Kritis".
+Status             : Lulus
+
+ID Kasus Uji       : TC-STK-04
+Nama Kasus Uji     : Melihat detail produk dan riwayat transaksi
+Use Case Terkait   : UC-10
+Langkah Pengujian  :
+  1. Buka halaman Stok.
+  2. Klik salah satu produk pada tabel.
+  3. Periksa halaman detail.
+Data Masukan       : -
+Hasil yang Diharapkan : Halaman detail menampilkan gambar, stok, ringkasan aktivitas, dan tabel riwayat transaksi.
+Status             : Lulus
+
+ID Kasus Uji       : TC-STK-05
+Nama Kasus Uji     : Menghapus produk
+Use Case Terkait   : UC-09
+Langkah Pengujian  :
+  1. Buka halaman Stok.
+  2. Klik ikon hapus pada salah satu produk.
+  3. Konfirmasi penghapusan.
+Data Masukan       : -
+Hasil yang Diharapkan : Produk hilang dari daftar dan basis data.
+Status             : Lulus
+
+Tabel 2.4 Hasil Pengujian Modul Berlangganan
+
+ID Kasus Uji       : TC-SUB-01
+Nama Kasus Uji     : Melihat daftar paket langganan
+Use Case Terkait   : UC-18
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /subscription.
+Data Masukan       : -
+Hasil yang Diharapkan : Sistem menampilkan paket Bookify App dan Bookify Marketplace, masing-masing varian bulanan dan tahunan, lengkap dengan harga.
+Status             : Lulus
+
+ID Kasus Uji       : TC-SUB-02
+Nama Kasus Uji     : Diskon upgrade otomatis (App ke Marketplace)
+Use Case Terkait   : UC-19, UC-20
+Langkah Pengujian  :
+  1. Login sebagai user yang sudah memiliki langganan aktif pada Paket Bookify App.
+  2. Buka halaman /subscription.
+  3. Pilih salah satu paket Marketplace.
+  4. Perhatikan ringkasan harga di halaman Checkout.
+Data Masukan       : paket = Paket Bookify Marketplace bulanan, harga = 99000, diskon = 30 persen
+Hasil yang Diharapkan : Harga coret (99000) ditampilkan di samping harga setelah diskon (69300), dan total tagihan adalah 69300.
+Status             : Lulus
+
+ID Kasus Uji       : TC-SUB-03
+Nama Kasus Uji     : Checkout dan pembayaran paket langganan
+Use Case Terkait   : UC-19, UC-20
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Pilih paket langganan.
+  3. Isi data pemesan pada halaman Checkout.
+  4. Pilih metode QRIS.
+  5. Konfirmasi pembayaran.
+Data Masukan       : paket = Paket Bookify App bulanan, harga = 49000
+Hasil yang Diharapkan : Langganan aktif tercatat, dan entri baru muncul di halaman Riwayat Pembayaran.
+Status             : Lulus
+
+ID Kasus Uji       : TC-SUB-04
+Nama Kasus Uji     : Membatalkan langganan aktif
+Use Case Terkait   : UC-21
+Langkah Pengujian  :
+  1. Login sebagai user yang memiliki langganan aktif.
+  2. Buka halaman /subscription/my.
+  3. Klik tombol Batalkan.
+  4. Konfirmasi pembatalan.
+Data Masukan       : -
+Hasil yang Diharapkan : Status langganan berubah menjadi nonaktif.
+Status             : Lulus
+
+ID Kasus Uji       : TC-SUB-05
+Nama Kasus Uji     : Melihat riwayat pembayaran langganan
+Use Case Terkait   : UC-22
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /subscription/payments.
+Data Masukan       : -
+Hasil yang Diharapkan : Sistem menampilkan daftar transaksi pembayaran langganan milik pengguna tersebut, lengkap dengan status (Berhasil, Dibatalkan, atau Direfund).
+Status             : Lulus
+
+Tabel 2.5 Hasil Pengujian Modul Keranjang
+
+ID Kasus Uji       : TC-CART-01
+Nama Kasus Uji     : Menambahkan paket langganan ke keranjang
+Use Case Terkait   : UC-23
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /subscription.
+  3. Klik tombol Tambah ke Keranjang pada salah satu paket.
+Data Masukan       : paket = Paket Bookify App bulanan
+Hasil yang Diharapkan : Item muncul di halaman /cart dan badge keranjang bertambah.
+Status             : Lulus
+
+ID Kasus Uji       : TC-CART-02
+Nama Kasus Uji     : Mengubah jumlah item di keranjang
+Use Case Terkait   : UC-24
+Langkah Pengujian  :
+  1. Buka halaman Keranjang.
+  2. Klik tombol tambah atau kurang pada item.
+Data Masukan       : jumlah diubah dari 1 menjadi 2
+Hasil yang Diharapkan : Subtotal dan total tagihan berubah sesuai jumlah baru.
+Status             : Lulus
+
+ID Kasus Uji       : TC-CART-03
+Nama Kasus Uji     : Menghapus item dari keranjang
+Use Case Terkait   : UC-24
+Langkah Pengujian  :
+  1. Buka halaman Keranjang.
+  2. Klik ikon hapus pada item.
+  3. Konfirmasi penghapusan.
+Data Masukan       : -
+Hasil yang Diharapkan : Item hilang dari daftar keranjang dan total tagihan dihitung ulang.
+Status             : Lulus
+
+ID Kasus Uji       : TC-CART-04
+Nama Kasus Uji     : Checkout dari keranjang
+Use Case Terkait   : UC-25
+Langkah Pengujian  :
+  1. Tambahkan minimal satu item ke keranjang.
+  2. Buka halaman Keranjang.
+  3. Klik tombol Lanjut ke Pembayaran.
+Data Masukan       : -
+Hasil yang Diharapkan : Langganan baru tercatat (jika item berupa paket) dan transaksi tercatat.
+Status             : Lulus
+
+Tabel 2.6 Hasil Pengujian Modul Komunitas dan Insight
+
+ID Kasus Uji       : TC-COM-01
+Nama Kasus Uji     : Membuat postingan baru
+Use Case Terkait   : UC-13
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /dashboard/community.
+  3. Klik tombol Buat Postingan.
+  4. Isi judul, kategori, dan konten.
+  5. Klik Publikasikan.
+Data Masukan       : judul = "Tips mengelola stok", kategori = "Tips", konten = "..."
+Hasil yang Diharapkan : Postingan muncul di daftar komunitas.
+Status             : Lulus
+
+ID Kasus Uji       : TC-COM-02
+Nama Kasus Uji     : Memberikan komentar pada postingan
+Use Case Terkait   : UC-16
+Langkah Pengujian  :
+  1. Buka salah satu postingan di komunitas.
+  2. Ketik komentar pada kolom komentar.
+  3. Klik tombol Kirim.
+Data Masukan       : komentar = "Terima kasih tipsnya"
+Hasil yang Diharapkan : Komentar muncul di daftar komentar postingan.
+Status             : Lulus
+
+ID Kasus Uji       : TC-COM-03
+Nama Kasus Uji     : Menyukai postingan
+Use Case Terkait   : UC-17
+Langkah Pengujian  :
+  1. Buka salah satu postingan.
+  2. Klik ikon like.
+Data Masukan       : -
+Hasil yang Diharapkan : Jumlah like bertambah dan ikon berubah menjadi aktif.
+Status             : Lulus
+
+ID Kasus Uji       : TC-INS-01
+Nama Kasus Uji     : Melihat halaman insight
+Use Case Terkait   : UC-11
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /dashboard/insights.
+Data Masukan       : -
+Hasil yang Diharapkan : Sistem menampilkan grafik dan ringkasan performa bisnis berdasarkan data transaksi.
+Status             : Lulus
+
+ID Kasus Uji       : TC-RPT-01
+Nama Kasus Uji     : Mengunduh laporan PDF
+Use Case Terkait   : UC-12
+Langkah Pengujian  :
+  1. Login sebagai user.
+  2. Buka halaman /dashboard/reports.
+  3. Klik tombol Unduh PDF.
+Data Masukan       : -
+Hasil yang Diharapkan : Browser mengunduh file laporan dalam format PDF.
+Status             : Lulus
+
+Tabel 2.7 Hasil Pengujian Modul Marketplace Integration
+
+ID Kasus Uji       : TC-MKT-01
+Nama Kasus Uji     : Menghubungkan akun marketplace
+Use Case Terkait   : UC-26
+Langkah Pengujian  :
+  1. Login sebagai user dengan paket Marketplace aktif.
+  2. Buka halaman /marketplace.
+  3. Klik Hubungkan Marketplace.
+  4. Isi nama toko, platform, dan URL toko.
+  5. Klik Simpan.
+Data Masukan       : nama = "Toko Buku Maju", platform = "Shopee", url = "https://shopee.co.id/tokobukumaju"
+Hasil yang Diharapkan : Koneksi marketplace tersimpan dan muncul di daftar koneksi.
+Status             : Lulus
+
+ID Kasus Uji       : TC-MKT-02
+Nama Kasus Uji     : Mengaktifkan atau menonaktifkan koneksi marketplace
+Use Case Terkait   : UC-27
+Langkah Pengujian  :
+  1. Buka halaman Marketplace.
+  2. Klik toggle pada salah satu koneksi.
+Data Masukan       : -
+Hasil yang Diharapkan : Status koneksi berubah dari Aktif menjadi Nonaktif atau sebaliknya.
+Status             : Lulus
+
+ID Kasus Uji       : TC-MKT-03
+Nama Kasus Uji     : Menghapus koneksi marketplace
+Use Case Terkait   : UC-28
+Langkah Pengujian  :
+  1. Buka halaman Marketplace.
+  2. Klik ikon hapus pada salah satu koneksi.
+  3. Konfirmasi penghapusan.
+Data Masukan       : -
+Hasil yang Diharapkan : Koneksi hilang dari daftar.
+Status             : Lulus
+
+Tabel 2.8 Hasil Pengujian Modul Manajemen Admin
+
+ID Kasus Uji       : TC-ADM-01
+Nama Kasus Uji     : Login sebagai admin dan masuk ke Dashboard Admin
+Use Case Terkait   : UC-29
+Langkah Pengujian  :
+  1. Login dengan akun admin.
+  2. Sistem otomatis mengarahkan ke Dashboard Admin.
+Data Masukan       : akun admin
+Hasil yang Diharapkan : Halaman Dashboard Admin tampil dengan ringkasan statistik pengguna dan langganan.
+Status             : Lulus
+
+ID Kasus Uji       : TC-ADM-02
+Nama Kasus Uji     : Mengelola data pengguna (lihat, edit, nonaktifkan, hapus)
+Use Case Terkait   : UC-30
+Langkah Pengujian  :
+  1. Login sebagai admin.
+  2. Buka halaman /admin/users.
+  3. Pilih salah satu pengguna dan lakukan aksi edit, toggle aktif, atau hapus.
+Data Masukan       : -
+Hasil yang Diharapkan : Perubahan data pengguna tersimpan dan tercermin di daftar pengguna.
+Status             : Lulus
+
+ID Kasus Uji       : TC-ADM-03
+Nama Kasus Uji     : Mengelola paket langganan dan diskon upgrade
+Use Case Terkait   : UC-32
+Langkah Pengujian  :
+  1. Login sebagai admin.
+  2. Buka halaman /admin/plans.
+  3. Edit salah satu paket dan ubah harga atau persentase diskon upgrade.
+  4. Klik Simpan.
+Data Masukan       : diskon upgrade diubah dari 30 menjadi 40 persen
+Hasil yang Diharapkan : Perubahan tersimpan dan tampil pada daftar paket. Saat user membuka halaman subscription, harga diskon dihitung ulang.
+Status             : Lulus
+
+ID Kasus Uji       : TC-ADM-04
+Nama Kasus Uji     : Membatalkan transaksi pembayaran (tanpa refund)
+Use Case Terkait   : UC-35
+Langkah Pengujian  :
+  1. Login sebagai admin.
+  2. Buka halaman /admin/transactions.
+  3. Pilih transaksi dengan status Berhasil.
+  4. Isi alasan pembatalan, matikan opsi refund.
+  5. Klik Proses Pembatalan.
+Data Masukan       : alasan = "Permintaan pembatalan dari pengguna", refund = tidak
+Hasil yang Diharapkan : Status transaksi berubah menjadi Dibatalkan, tanpa kolom refund terisi.
+Status             : Lulus
+
+ID Kasus Uji       : TC-ADM-05
+Nama Kasus Uji     : Membatalkan transaksi pembayaran dengan refund penuh
+Use Case Terkait   : UC-36
+Langkah Pengujian  : Sama seperti TC-ADM-04, namun opsi refund diaktifkan dan nominal refund sesuai dengan jumlah pembayaran.
+Data Masukan       : alasan = "Kesalahan input", refund = ya, nominal = 49000
+Hasil yang Diharapkan : Status transaksi berubah menjadi Direfund dan nomor referensi refund tercatat.
+Status             : Lulus
+
+ID Kasus Uji       : TC-ADM-06
+Nama Kasus Uji     : Memantau daftar langganan pengguna
+Use Case Terkait   : UC-33
+Langkah Pengujian  :
+  1. Login sebagai admin.
+  2. Buka halaman /admin/subscriptions.
+Data Masukan       : -
+Hasil yang Diharapkan : Sistem menampilkan daftar seluruh langganan pengguna beserta status dan periode.
+Status             : Lulus
+
+2.4.3 Pengujian Responsivitas
+
+Pengujian responsivitas dilakukan untuk memastikan bahwa tampilan aplikasi Bookify dapat beradaptasi dengan baik pada berbagai ukuran layar. Pengujian dilakukan pada tiga ukuran viewport utama:
+
+a. Desktop (lebar 1366 piksel) : seluruh halaman tampil dengan layout penuh, sidebar dan tabel terlihat utuh.
+b. Tablet (lebar 768 piksel) : elemen-elemen utama tetap proporsional, beberapa kolom tabel disembunyikan atau digeser.
+c. Mobile (lebar 375 piksel) : layout berubah menjadi satu kolom, sidebar collapse menjadi hamburger, tabel menjadi daftar vertikal, dan tombol aksi utama tetap mudah dijangkau.
+
+Hasil pengujian menunjukkan bahwa seluruh halaman utama Bookify (Dashboard, Transaksi, Stok, Subscription, Komunitas, Admin) sudah bersifat responsif dan dapat digunakan dengan nyaman pada ketiga ukuran tersebut.
+
+2.4.4 Pengujian Compatibility (Kompatibilitas Browser)
+
+Pengujian kompatibilitas dilakukan pada beberapa browser populer untuk memastikan aplikasi dapat berjalan dengan baik tanpa error visual maupun fungsional:
+
+a. Google Chrome versi 130 ke atas : Lulus
+b. Mozilla Firefox versi 130 ke atas : Lulus
+c. Microsoft Edge versi 130 ke atas : Lulus
+d. Safari versi 17 ke atas (pengujian terbatas pada perangkat Mac) : Lulus
+
+2.4.5 Hasil Rekapitulasi Pengujian
+
+Berdasarkan keseluruhan kasus uji yang telah dijalankan pada Tabel 2.1 hingga Tabel 2.8, berikut adalah rekapitulasi hasil pengujian:
+
+Tabel 2.9 Rekapitulasi Hasil Pengujian
+
+Modul                    : Jumlah Kasus Uji : Lulus : Tidak Lulus
+Autentikasi              : 4                : 4     : 0
+Pembukuan                : 4                : 4     : 0
+Stok atau Inventori      : 5                : 5     : 0
+Berlangganan             : 5                : 5     : 0
+Keranjang                : 4                : 4     : 0
+Komunitas dan Insight    : 4                : 4     : 0
+Marketplace Integration  : 3                : 3     : 0
+Manajemen Admin          : 6                : 6     : 0
+Total                    : 35               : 35    : 0
+
+Persentase kelulusan pengujian adalah 100 persen (35 dari 35 kasus uji lulus). Hal ini menunjukkan bahwa seluruh fitur pada aplikasi Bookify telah berhasil diimplementasikan dan berjalan sesuai dengan spesifikasi yang ditetapkan pada BAB 1.
+
+2.4.6 Kesimpulan Pengujian
+
+Dari hasil pengujian yang telah dilakukan, dapat ditarik kesimpulan bahwa:
+
+a. Seluruh use case yang telah didefinisikan pada BAB 1 telah berhasil diimplementasikan dan diuji pada BAB 2.
+b. Fitur upgrade otomatis dengan diskon 30 persen dari Paket Bookify App ke Paket Bookify Marketplace berjalan sesuai dengan rancangan.
+c. Modul manajemen admin, termasuk pembatalan transaksi dengan opsi refund sebagian atau penuh, telah berfungsi dengan baik.
+d. Aplikasi Bookify sudah bersifat responsif dan kompatibel pada browser-browser populer.
+e. Tidak ditemukan bug atau error yang signifikan pada saat pengujian.
+
+Dengan demikian, aplikasi Bookify dinyatakan layak untuk digunakan oleh pengguna akhir dan siap untuk melewati tahap selanjutnya, yaitu tahap deployment dan rilis ke lingkungan produksi.
